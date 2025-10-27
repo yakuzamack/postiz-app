@@ -3,7 +3,7 @@ databases:
   - name: postiz-db
     databaseName: postiz
     user: postiz
-    plan: starter
+    plan: standard
     region: oregon
 
 services:
@@ -11,7 +11,7 @@ services:
   # Redis
   - type: redis
     name: postiz-redis
-    plan: starter
+    plan: standard
     region: oregon
     maxmemoryPolicy: allkeys-lru
     ipAllowList: []
@@ -21,7 +21,7 @@ services:
     name: postiz-backend
     env: node
     region: oregon
-    plan: starter
+    plan: standard
     buildCommand: pnpm install && pnpm run build:backend
     startCommand: pnpm run start:prod:backend
     healthCheckPath: /
@@ -75,7 +75,7 @@ services:
     name: postiz-workers
     env: node
     region: oregon
-    plan: starter
+    plan: standard
     buildCommand: pnpm install && pnpm run build:workers
     startCommand: pnpm run start:prod:workers
     envVars:
@@ -124,7 +124,7 @@ services:
     name: postiz-cron
     env: node
     region: oregon
-    plan: starter
+    plan: standard
     buildCommand: pnpm install && pnpm run build:cron
     startCommand: pnpm run start:prod:cron
     schedule: "*/5 * * * *"

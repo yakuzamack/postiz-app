@@ -279,19 +279,20 @@ After Cloudflare Pages deployment:
 
 | Service | Plan | Cost |
 |---------|------|------|
-| Render PostgreSQL | Starter | $7/month |
-| Render Redis | Starter | $7/month |
-| Render Backend | Starter | $7/month |
-| Render Workers | Starter | $7/month |
-| Render Cron | Starter | $7/month |
+| Render PostgreSQL | Standard | $25/month |
+| Render Redis | Standard | $10/month |
+| Render Backend | Standard | $25/month |
+| Render Workers | Standard | $25/month |
+| Render Cron | Standard | $25/month |
 | Cloudflare Pages | Free | $0 |
 | Cloudflare R2 | Pay-as-you-go | ~$1-5/month |
-| **Total** | | **~$36-40/month** |
+| **Total** | | **~$111-115/month** |
 
 ### Cost Optimization Tips
-- Use Render's **Free tier** for non-production testing
-- Combine Workers + Cron into one service if possible
-- Use Render's **Hobby plan** ($7/month) for low-traffic sites
+- Start with **Hobby plan** ($7/month per service) for development/testing
+- Combine Workers + Cron into one service to save $25/month
+- Use **Free tier** for non-production testing (limited resources)
+- Consider **Standard Plus** ($50/month) for high-traffic production
 
 ---
 
