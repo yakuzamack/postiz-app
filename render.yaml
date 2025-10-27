@@ -47,6 +47,8 @@ services:
           property: host
       - key: FRONTEND_URL
         sync: false
+      - key: ADDITIONAL_FRONTEND_URLS
+        sync: false
       - key: IS_GENERAL
         value: "true"
       - key: NODE_ENV
@@ -66,14 +68,15 @@ services:
       - key: CLOUDFLARE_REGION
         value: auto
 
-  # Workers (Background Jobs)
-  - type: worker
-    name: postiz-workers
-    runtime: node
-    plan: standard
-    buildCommand: NODE_OPTIONS=--max-old-space-size=1024 pnpm install && NODE_OPTIONS=--max-old-space-size=1024 pnpm run build:workers
-    startCommand: pnpm run start:prod:workers
-    envVars:
+  # Workers (Background Jobs) - DISABLED due to memory limits
+  # Uncomment to enable after upgrading to Pro plan
+  # - type: worker
+  #   name: postiz-workers
+  #   runtime: node
+  #   plan: standard
+  #   buildCommand: NODE_OPTIONS=--max-old-space-size=1024 pnpm install && NODE_OPTIONS=--max-old-space-size=1024 pnpm run build:workers
+  #   startCommand: pnpm run start:prod:workers
+  #   envVars:
       - key: NODE_VERSION
         value: 22.0.0
       - key: DATABASE_URL
@@ -114,14 +117,15 @@ services:
       - key: CLOUDFLARE_REGION
         value: auto
 
-  # Cron Jobs
-  - type: cron
-    name: postiz-cron
-    runtime: node
-    schedule: "*/5 * * * *"
-    buildCommand: NODE_OPTIONS=--max-old-space-size=1024 pnpm install && NODE_OPTIONS=--max-old-space-size=1024 pnpm run build:cron
-    startCommand: pnpm run start:prod:cron
-    envVars:
+  # Cron Jobs - DISABLED due to memory limits
+  # Uncomment to enable after upgrading to Pro plan
+  # - type: cron
+  #   name: postiz-cron
+  #   runtime: node
+  #   schedule: "*/5 * * * *"
+  #   buildCommand: NODE_OPTIONS=--max-old-space-size=1024 pnpm install && NODE_OPTIONS=--max-old-space-size=1024 pnpm run build:cron
+  #   startCommand: pnpm run start:prod:cron
+  #   envVars:
       - key: NODE_VERSION
         value: 22.0.0
       - key: DATABASE_URL
