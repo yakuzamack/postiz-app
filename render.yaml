@@ -3,7 +3,7 @@ databases:
   - name: postiz-db
     databaseName: postiz
     user: postiz
-    plan: standard
+    plan: basic
     region: oregon
 
 services:
