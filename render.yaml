@@ -1,0 +1,158 @@
+services:
+  # PostgreSQL Database
+  - type: pserv
+    name: postiz-db
+    env: docker
+    plan: starter
+    region: oregon
+    databases:
+      - name: postiz
+        databaseName: postiz
+        user: postiz
+
+  # Redis
+  - type: redis
+    name: postiz-redis
+    plan: starter
+    region: oregon
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
+
+  # Backend API
+  - type: web
+    name: postiz-backend
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: pnpm install && pnpm run build:backend
+    startCommand: pnpm run start:prod:backend
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: 22.0.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postiz-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: postiz-redis
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: BACKEND_INTERNAL_URL
+        fromService:
+          type: web
+          name: postiz-backend
+          property: host
+      - key: NEXT_PUBLIC_BACKEND_URL
+        fromService:
+          type: web
+          name: postiz-backend
+          property: host
+      - key: FRONTEND_URL
+        sync: false
+      - key: IS_GENERAL
+        value: "true"
+      - key: NODE_ENV
+        value: production
+      - key: STORAGE_PROVIDER
+        value: cloudflare
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_SECRET_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_BUCKETNAME
+        sync: false
+      - key: CLOUDFLARE_BUCKET_URL
+        sync: false
+      - key: CLOUDFLARE_REGION
+        value: auto
+
+  # Workers (Background Jobs)
+  - type: worker
+    name: postiz-workers
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: pnpm install && pnpm run build:workers
+    startCommand: pnpm run start:prod:workers
+    envVars:
+      - key: NODE_VERSION
+        value: 22.0.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postiz-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: postiz-redis
+          property: connectionString
+      - key: JWT_SECRET
+        fromService:
+          type: web
+          name: postiz-backend
+          envVarKey: JWT_SECRET
+      - key: BACKEND_INTERNAL_URL
+        fromService:
+          type: web
+          name: postiz-backend
+          property: host
+      - key: IS_GENERAL
+        value: "true"
+      - key: NODE_ENV
+        value: production
+      - key: STORAGE_PROVIDER
+        value: cloudflare
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_SECRET_ACCESS_KEY
+        sync: false
+      - key: CLOUDFLARE_BUCKETNAME
+        sync: false
+      - key: CLOUDFLARE_BUCKET_URL
+        sync: false
+      - key: CLOUDFLARE_REGION
+        value: auto
+
+  # Cron Jobs
+  - type: cron
+    name: postiz-cron
+    env: node
+    region: oregon
+    plan: starter
+    buildCommand: pnpm install && pnpm run build:cron
+    startCommand: pnpm run start:prod:cron
+    schedule: "*/5 * * * *"
+    envVars:
+      - key: NODE_VERSION
+        value: 22.0.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: postiz-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: postiz-redis
+          property: connectionString
+      - key: JWT_SECRET
+        fromService:
+          type: web
+          name: postiz-backend
+          envVarKey: JWT_SECRET
+      - key: BACKEND_INTERNAL_URL
+        fromService:
+          type: web
+          name: postiz-backend
+          property: host
+      - key: IS_GENERAL
+        value: "true"
+      - key: NODE_ENV
+        value: production
