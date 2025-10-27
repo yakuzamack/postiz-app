@@ -1,14 +1,12 @@
-services:
+databases:
   # PostgreSQL Database
-  - type: pserv
-    name: postiz-db
-    env: docker
+  - name: postiz-db
+    databaseName: postiz
+    user: postiz
     plan: starter
     region: oregon
-    databases:
-      - name: postiz
-        databaseName: postiz
-        user: postiz
+
+services:
 
   # Redis
   - type: redis
