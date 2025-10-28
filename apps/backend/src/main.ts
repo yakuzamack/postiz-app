@@ -57,9 +57,10 @@ async function bootstrap() {
   loadSwagger(app);
 
   const port = process.env.PORT || 3000;
+  const host = '0.0.0.0';
 
   try {
-    await app.listen(port);
+    await app.listen(port, host);
 
     checkConfiguration(); // Do this last, so that users will see obvious issues at the end of the startup log without having to scroll up.
 
