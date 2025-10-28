@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://postiz-app.vercel.app/api/:path*"
+      "destination": "https://postiz-backend-fbp3.onrender.com/api/:path*"
     }
   ]
 }
