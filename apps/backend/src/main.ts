@@ -63,7 +63,7 @@ async function bootstrap() {
 
     checkConfiguration(); // Do this last, so that users will see obvious issues at the end of the startup log without having to scroll up.
 
-    Logger.log(`🚀 Backend is running on: http://localhost:${port}`);
+    Logger.log(`🚀 Backend is running on: http://${host}:${port}`);
   } catch (e) {
     Logger.error(`Backend failed to start on port ${port}`, e);
   }
